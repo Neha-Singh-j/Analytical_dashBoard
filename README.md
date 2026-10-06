@@ -11,6 +11,9 @@ than a static dashboard: **ingestion → normalization → relational joins
 
 > **Note:** If you encounter any deployment-related issues while running the hosted version, please refer to the screenshots included in this README to get an idea of the expected website functionality and UI. You can also run the project locally by following the setup instructions above to explore the complete working application.
 
+
+[Deployed Link: https://frontend-six-delta-7tdetmhz7m.vercel.app](https://frontend-six-delta-7tdetmhz7m.vercel.app) 
+
 ## Overview
 
 The application brings together three datasets:
