@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipments>
+    <shipment>
+        <shipment_id>SHP-9001</shipment_id>
+        <order_id>1001</order_id>
+        <carrier>Express Logistics</carrier>
+        <tracking_number>EXP1001TRK</tracking_number>
+        <shipped_date>2024-01-02</shipped_date>
+        <expected_delivery_date>2024-01-05</expected_delivery_date>
+        <actual_delivery_date>2024-01-04</actual_delivery_date>
+        <status>Delivered</status>
+    </shipment>
+    <shipment>
+        <shipment_id>SHP-9002</shipment_id>
+        <order_id>1002</order_id>
+        <carrier>Swift Cargo</carrier>
+        <tracking_number>SWF1002TRK</tracking_number>
+        <shipped_date>2024-01-03</shipped_date>
+        <expected_delivery_date>2024-01-06</expected_delivery_date>
+        <actual_delivery_date>2024-01-08</actual_delivery_date>
+        <status>Delayed</status>
+    </shipment>
+</shipments>
