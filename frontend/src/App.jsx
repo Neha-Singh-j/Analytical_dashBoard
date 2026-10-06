@@ -9,6 +9,7 @@ import { Header } from './components/common/Header';
 import { DashboardPage } from './pages/DashboardPage';
 import { OrdersPage } from './pages/OrdersPage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
+import { CountriesPage } from './pages/CountriesPage';
 import { IngestionPage } from './pages/IngestionPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
@@ -37,6 +38,7 @@ const ProtectedLayout = () => {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/orders" element={<OrdersPage />} />
               <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/countries" element={<CountriesPage />} />
               <Route path="/data" element={<IngestionPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>

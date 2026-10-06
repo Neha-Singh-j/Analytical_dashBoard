@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Use /api for Vite dev server proxy or direct http://127.0.0.1:8000/api
 const API_BASE_URL = '/api';
 
 const apiClient = axios.create({
@@ -25,6 +24,27 @@ export const api = {
 
   getMe: async (email) => {
     const response = await apiClient.get('/auth/me', { params: { email } });
+    return response.data;
+  },
+
+  // Countries Intelligence APIs
+  getCountries: async (params = {}) => {
+    const response = await apiClient.get('/countries', { params });
+    return response.data;
+  },
+
+  getCountriesSummary: async () => {
+    const response = await apiClient.get('/countries/summary');
+    return response.data;
+  },
+
+  syncCountries: async () => {
+    const response = await apiClient.post('/countries/sync');
+    return response.data;
+  },
+
+  getCountryByCode: async (code) => {
+    const response = await apiClient.get(`/countries/${code}`);
     return response.data;
   },
 
@@ -62,8 +82,8 @@ export const api = {
   },
 
   // Ingestion APIs
-  getIngestionLogs: async () => {
-    const response = await apiClient.get('/ingest/logs');
+  getIngestionLogs: async (params = {}) => {
+    const response = await apiClient.get('/ingest/logs', { params });
     return response.data;
   },
 

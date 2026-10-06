@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from .database.connection import init_db
 from .services.ingestion_service import ingest_all_datasets
-from .api.routes import ingest, analytics, orders, products, shipments, auth
+from .api.routes import ingest, analytics, orders, products, shipments, auth, countries
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,6 +36,7 @@ app.add_middleware(
 
 # Include Routers
 app.include_router(auth.router, prefix="/api")
+app.include_router(countries.router, prefix="/api")
 app.include_router(ingest.router, prefix="/api")
 app.include_router(analytics.router, prefix="/api")
 app.include_router(orders.router, prefix="/api")

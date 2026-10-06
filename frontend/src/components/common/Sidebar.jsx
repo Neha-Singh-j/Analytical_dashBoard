@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ShoppingBag,
   TrendingUp,
+  Globe,
   Database,
   LogOut,
   ShieldAlert,
@@ -24,6 +25,7 @@ export const Sidebar = () => {
     { label: 'Dashboard', path: '/', icon: LayoutDashboard },
     { label: 'Orders', path: '/orders', icon: ShoppingBag },
     { label: 'Analytics', path: '/analytics', icon: TrendingUp },
+    { label: 'Countries Data', path: '/countries', icon: Globe },
     { label: 'Data Ingestion', path: '/data', icon: Database },
   ];
 

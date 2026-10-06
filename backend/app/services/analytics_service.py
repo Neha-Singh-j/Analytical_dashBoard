@@ -124,7 +124,22 @@ def get_orders_list(page=1, limit=10, category=None, status=None, search=None, c
     order_groups = []
     for order_id, group in df.groupby("order_id"):
         first = group.iloc[0]
-        
+
+        # Extract and sanitize string fields
+        carrier_str = str(first.get("carrier") or "N/A").strip()
+        if carrier_str.lower() == "nan":
+            carrier_str = "N/A"
+
+        status_str = str(first.get("status") or "In Transit").strip()
+        if status_str.lower() == "nan":
+            status_str = "In Transit"
+
+        exp_del = first.get("expected_delivery_date")
+        exp_del_str = str(exp_del).strip() if exp_del and str(exp_del).lower() != "nan" else "N/A"
+
+        act_del = first.get("actual_delivery_date")
+        act_del_str = str(act_del).strip() if act_del and str(act_del).lower() != "nan" else "N/A"
+
         # Check filters
         if category and category.lower() != "all":
             if not any(group["category"].str.lower() == category.lower()):
@@ -133,7 +148,7 @@ def get_orders_list(page=1, limit=10, category=None, status=None, search=None, c
         if status and status.lower() != "all":
             if status.lower() == "delayed" and not any(group["is_delayed"]):
                 continue
-            elif status.lower() in ["on-time", "delivered"] and first["status"].lower() != "delivered":
+            elif status.lower() in ["on-time", "delivered"] and status_str.lower() != "delivered":
                 continue
 
         if search:
@@ -149,20 +164,20 @@ def get_orders_list(page=1, limit=10, category=None, status=None, search=None, c
         categories = list(group["category"].unique())
 
         order_groups.append({
-            "order_id": order_id,
-            "order_date": first["order_date"],
-            "customer_id": first.get("customer_id", ""),
-            "customer_name": first.get("customer_name", "N/A"),
+            "order_id": str(order_id),
+            "order_date": str(first["order_date"]),
+            "customer_id": str(first.get("customer_id") or ""),
+            "customer_name": str(first.get("customer_name") or "Guest Customer"),
             "items_count": int(group["qty"].sum()),
             "items_summary": items_summary,
             "categories": categories,
             "total_value": round(total_val * rate, 2),
             "currency": currency.upper(),
-            "carrier": first.get("carrier", "N/A"),
-            "status": first.get("status", "Unknown"),
+            "carrier": carrier_str,
+            "status": status_str,
             "is_delayed": bool(group["is_delayed"].any()),
-            "expected_delivery": first.get("expected_delivery_date"),
-            "actual_delivery": first.get("actual_delivery_date")
+            "expected_delivery": exp_del_str,
+            "actual_delivery": act_del_str
         })
 
     # Sort descending by date/id
@@ -233,10 +248,18 @@ def get_order_by_id(order_id, currency="USD"):
         "currency": currency.upper()
     }
 
-def get_ingestion_logs():
+def get_ingestion_logs(page=1, limit=10):
     conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM ingestion_logs ORDER BY timestamp DESC LIMIT 50")
+    cursor.execute("SELECT COUNT(*) FROM ingestion_logs")
+    total_records = cursor.fetchone()[0]
+
+    offset = (page - 1) * limit
+    cursor.execute("""
+        SELECT * FROM ingestion_logs
+        ORDER BY id DESC
+        LIMIT ? OFFSET ?
+    """, (limit, offset))
     rows = cursor.fetchall()
     conn.close()
 
@@ -252,4 +275,14 @@ def get_ingestion_logs():
             "timestamp": r["timestamp"]
         })
 
-    return logs
+    total_pages = (total_records + limit - 1) // limit if limit > 0 else 1
+
+    return {
+        "logs": logs,
+        "pagination": {
+            "page": page,
+            "limit": limit,
+            "total": total_records,
+            "totalPages": total_pages
+        }
+    }

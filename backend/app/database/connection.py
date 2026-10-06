@@ -51,8 +51,9 @@ def init_db():
         CREATE TABLE IF NOT EXISTS shipments (
             shipment_id TEXT PRIMARY KEY,
             order_id TEXT NOT NULL,
-            carrier TEXT,
-            tracking_number TEXT,
+            carrier TEXT DEFAULT 'Standard Express',
+            tracking_number TEXT DEFAULT 'N/A',
+            delivery_days INTEGER DEFAULT 0,
             shipped_date TEXT,
             expected_delivery_date TEXT,
             actual_delivery_date TEXT,
@@ -83,6 +84,26 @@ def init_db():
             password_hash TEXT NOT NULL,
             role TEXT DEFAULT 'Data Analyst',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+
+    # Countries table for REST Countries API integration
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS countries (
+            cca2 TEXT PRIMARY KEY,
+            cca3 TEXT NOT NULL,
+            name_common TEXT NOT NULL,
+            name_official TEXT,
+            region TEXT,
+            subregion TEXT,
+            capital TEXT,
+            population INTEGER,
+            area REAL,
+            population_density REAL,
+            currencies TEXT,
+            languages TEXT,
+            flag_emoji TEXT,
+            flag_png TEXT
         )
     """)
 

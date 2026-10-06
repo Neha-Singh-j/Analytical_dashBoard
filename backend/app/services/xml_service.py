@@ -3,8 +3,15 @@ from pathlib import Path
 
 def parse_xml_shipments(file_content_or_path):
     """
-    Parses Shipment.xml content or filepath.
-    Normalizes XML nodes into tabular shipment dictionaries.
+    Parses Shipment.xml content or filepath matching exact supplied schema:
+    <shipments>
+      <shipment>
+        <shipment_id>S001</shipment_id>
+        <order_id>1001</order_id>
+        <delivery_days>3</delivery_days>
+        <status>Delivered</status>
+      </shipment>
+    </shipments>
     """
     if isinstance(file_content_or_path, (str, Path)) and Path(file_content_or_path).exists():
         tree = ET.parse(file_content_or_path)
@@ -15,32 +22,25 @@ def parse_xml_shipments(file_content_or_path):
         root = ET.fromstring(str(file_content_or_path))
 
     shipments = []
-    # Find all shipment nodes under root
     for node in root.findall(".//shipment"):
         shipment_id = node.findtext("shipment_id") or node.findtext("id") or ""
         order_id = node.findtext("order_id") or ""
-        carrier = node.findtext("carrier") or ""
-        tracking_number = node.findtext("tracking_number") or node.findtext("tracking") or ""
-        shipped_date = node.findtext("shipped_date") or ""
-        expected_delivery = node.findtext("expected_delivery_date") or node.findtext("expected_delivery") or ""
-        actual_delivery = node.findtext("actual_delivery_date") or node.findtext("actual_delivery") or ""
-        status = node.findtext("status") or ""
+        delivery_days_raw = node.findtext("delivery_days") or "0"
+        status = node.findtext("status") or "Unknown"
 
-        # Derive initial status if missing
-        if not status:
-            if actual_delivery and expected_delivery:
-                status = "Delayed" if actual_delivery > expected_delivery else "Delivered"
-            else:
-                status = "In Transit"
+        try:
+            delivery_days = int(delivery_days_raw)
+        except ValueError:
+            delivery_days = 0
+
+        # Derive initial delay logic if status not explicit
+        if not status or status.lower() == "unknown":
+            status = "Delayed" if delivery_days > 5 else "Delivered"
 
         shipments.append({
             "shipment_id": str(shipment_id).strip(),
             "order_id": str(order_id).strip(),
-            "carrier": str(carrier).strip(),
-            "tracking_number": str(tracking_number).strip(),
-            "shipped_date": str(shipped_date).strip(),
-            "expected_delivery_date": str(expected_delivery).strip(),
-            "actual_delivery_date": str(actual_delivery).strip(),
+            "delivery_days": delivery_days,
             "status": str(status).strip()
         })
 

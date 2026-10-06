@@ -61,10 +61,20 @@ async def ingest_all():
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Ingestion pipeline failed: {str(e)}")
 
+from fastapi import APIRouter, UploadFile, File, Request, Query, HTTPException
+
 @router.get("/logs")
-async def get_logs():
+async def get_logs(
+    page: int = Query(1, ge=1),
+    limit: int = Query(10, ge=1, le=100)
+):
     try:
-        logs = get_ingestion_logs()
-        return {"success": True, "data": logs, "message": "Ingestion logs retrieved successfully"}
+        res = get_ingestion_logs(page=page, limit=limit)
+        return {
+            "success": True,
+            "data": res["logs"],
+            "pagination": res["pagination"],
+            "message": "Ingestion logs retrieved successfully"
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to fetch logs: {str(e)}")
