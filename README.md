@@ -9,6 +9,8 @@ The project was built around a practical data-processing workflow rather
 than a static dashboard: **ingestion → normalization → relational joins
 → business calculations → analytics APIs → dashboard visualizations**.
 
+> **Note:** If you encounter any deployment-related issues while running the hosted version, please refer to the screenshots included in this README to get an idea of the expected website functionality and UI. You can also run the project locally by following the setup instructions above to explore the complete working application.
+
 ## Overview
 
 The application brings together three datasets:
@@ -248,32 +250,34 @@ Add the screenshots of the actual working application to a
 Shows the main analytics dashboard with KPI cards, charts, and
 analytical information.
 
-![Dashboard](screenshots/dashboard.png)
+![Dashboard]
+<img width="1365" height="649" alt="Screenshot 2026-10-06 215831" src="https://github.com/user-attachments/assets/7cd8edb2-5815-4fc0-bbb7-dfd773299721" />
+
 
 ### Orders & Pagination
 
 Shows the orders list and API-driven pagination.
 
-![Orders Pagination](screenshots/pagination.png)
+![Orders Pagination]
+<img width="1357" height="660" alt="Screenshot 2026-10-06 225642" src="https://github.com/user-attachments/assets/cb858ab6-4701-4c6a-b77e-bf11e73c8c7f" />
 
-### Countries / Geographic View
-
-Shows the country-based information available in the dashboard.
-
-![Countries](screenshots/countries.png)
 
 ### Data Ingestion
 
 Shows the data ingestion interface and the process of loading JSON, CSV,
 and XML datasets.
 
-![Data Ingestion](screenshots/ingestion.png)
+[Data Ingestion]
+<img width="1365" height="666" alt="Screenshot 2026-10-06 215927" src="https://github.com/user-attachments/assets/20f4ac7e-1fbc-4c67-b0ae-3bba5b46343a" />
+
 
 ### Analytics / Charts
 
 Shows the analytical views generated from the processed datasets.
 
-![Analytics](screenshots/analytics.png)
+[Analytics]
+<img width="1365" height="661" alt="Screenshot 2026-10-06 215852" src="https://github.com/user-attachments/assets/8742d25b-89ab-46ab-84b1-40239f66b972" />
+
 
 > Replace the screenshot filenames above with the exact filenames you
 > add to the repository.
@@ -538,22 +542,8 @@ Analytical_Dashboard/
 │   ├── package.json
 │   └── ...
 │
-├── screenshots/
-│   ├── dashboard.png
-│   ├── pagination.png
-│   ├── countries.png
-│   ├── ingestion.png
-│   └── analytics.png
-│
 └── README.md
 ```
-
-## Notes
-
-This README describes the implemented backend/API design and the
-dashboard requirements supplied for the project. Where the exact
-frontend implementation or repository structure can vary, the README
-intentionally avoids claiming a specific library or implementation that
-is not confirmed.
-
+By: Neha Singh (2315001455)
+Built as a full-stack data analytics project demonstrating data ingestion, processing, backend API development, database management and interactive dashboard development.
 ------------------------------------------------------------------------
